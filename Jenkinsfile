@@ -7,9 +7,9 @@ pipeline {
         ECR_REPO     = 'my-app'                     // ECR repository name
         EKS_CLUSTER  = 'my-eks-cluster'             // EKS cluster name
         K8S_NAMESPACE = 'default'
-        ECR_REGISTRY = "$973584726060.dkr.ecr.ap-south-1.amazonaws.com/my-app"
+        ECR_REGISTRY = "973584726060.dkr.ecr.ap-south-1.amazonaws.com/my-app"
         IMAGE_TAG    = "${env.BUILD_NUMBER}"
-        IMAGE_URI    = "$arn:aws:ecr:ap-south-1:973584726060:repository/my-app:${IMAGE_TAG}"
+        IMAGE_URI    = "arn:aws:ecr:ap-south-1:973584726060:repository/my-app:${IMAGE_TAG}"
     }
 
     options {
