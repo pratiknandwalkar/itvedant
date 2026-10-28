@@ -3,13 +3,13 @@ pipeline {
 
     environment {
         AWS_REGION   = 'ap-south-1'                 // change to your region
-        AWS_ACCOUNT  = '123456789012'               // change to your 12-digit account ID
+        AWS_ACCOUNT  = '973584726060'               // change to your 12-digit account ID
         ECR_REPO     = 'my-app'                     // ECR repository name
         EKS_CLUSTER  = 'my-eks-cluster'             // EKS cluster name
         K8S_NAMESPACE = 'default'
-        ECR_REGISTRY = "${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        ECR_REGISTRY = "$973584726060.dkr.ecr.ap-south-1.amazonaws.com/my-app"
         IMAGE_TAG    = "${env.BUILD_NUMBER}"
-        IMAGE_URI    = "${ECR_REGISTRY}/${ECR_REPO}:${IMAGE_TAG}"
+        IMAGE_URI    = "$arn:aws:ecr:ap-south-1:973584726060:repository/my-app:${IMAGE_TAG}"
     }
 
     options {
@@ -53,11 +53,11 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                    aws eks update-kubeconfig --name ${EKS_CLUSTER} --region ${AWS_REGION}
+                    aws eks update-kubeconfig --name $my-eks-cluster --region ap-south-1
                     sed "s|IMAGE_PLACEHOLDER|${IMAGE_URI}|g" k8s/deployment.yaml > k8s/deployment.rendered.yaml
-                    kubectl apply -n ${K8S_NAMESPACE} -f k8s/deployment.rendered.yaml
-                    kubectl apply -n ${K8S_NAMESPACE} -f k8s/service.yaml
-                    kubectl rollout status deployment/my-app -n ${K8S_NAMESPACE} --timeout=180s
+                    kubectl apply -n default-f k8s/deployment.rendered.yaml
+                    kubectl apply -n default -f k8s/service.yaml
+                    kubectl rollout status deployment/my-app -n default --timeout=180s
                 '''
             }
         }
